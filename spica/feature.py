@@ -2,6 +2,7 @@ import argparse
 import inspect
 import re
 from pathlib import Path
+from abc import ABCMeta, abstractmethod
 
 import pandas as pd
 
@@ -15,7 +16,9 @@ def get_arguments(description):
 
 
 def get_features(namespace):
-    return inspect.getmembers(namespace, lambda x: inspect.isclass(x) and issubclass(x, Feature))
+    for k, v in namespace.items():
+        if inspect.isclass(v) and issubclass(v, Feature) and not inspect.isabstract(v):
+            yield v()
 
 
 def generate_features(namespace, overwrite):
@@ -26,7 +29,7 @@ def generate_features(namespace, overwrite):
             f.run().save()
 
 
-class Feature(object):
+class Feature(metaclass=ABCMeta):
     prefix = ''
     suffix = ''
     dir = '.'
@@ -45,6 +48,7 @@ class Feature(object):
             self.test.columns = self.prefix + self.test.columns + self.suffix
         return self
     
+    @abstractmethod
     def create_features(self):
         raise NotImplementedError
     
