@@ -15,7 +15,7 @@ def get_arguments(description):
 
 
 def get_features(namespace):
-    return inspect.getmembers(namespace, lambda x: issubclass(x, Feature))
+    return inspect.getmembers(namespace, lambda x: inspect.isclass(x) and issubclass(x, Feature))
 
 
 def generate_features(namespace, overwrite):
