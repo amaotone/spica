@@ -1,8 +1,8 @@
 import argparse
 import inspect
 import re
-from pathlib import Path
 from abc import ABCMeta, abstractmethod
+from pathlib import Path
 
 import pandas as pd
 
@@ -35,7 +35,10 @@ class Feature(metaclass=ABCMeta):
     dir = '.'
     
     def __init__(self):
-        self.name = re.sub("([A-Z])", lambda x: "_" + x.group(1).lower(), self.__class__.__name__).lstrip('_')
+        if self.__class__.__name__.isupper():
+            self.name = self.__class__.__name__.lower()
+        else:
+            self.name = re.sub("([A-Z])", lambda x: "_" + x.group(1).lower(), self.__class__.__name__).lstrip('_')
         self.train = pd.DataFrame()
         self.test = pd.DataFrame()
         self.train_path = Path(self.dir) / f'{self.name}_train.ftr'
