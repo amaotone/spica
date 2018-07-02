@@ -38,7 +38,7 @@ def get_DAE(X):
     h = Dense(500, activation='relu')(x_in)
     h = Dense(500, activation='relu', name='feature')(h)
     h = Dense(500, activation='relu')(h)
-    x_out = Dense(X.shape[1], activation='relu')(h)
+    x_out = Dense(X.shape[1], activation='linear')(h)
     model = Model(inputs=x_in, outputs=x_out)
     model.compile(optimizer='adam', loss='mse')
     return model
