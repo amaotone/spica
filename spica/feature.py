@@ -49,8 +49,8 @@ class Feature(metaclass=ABCMeta):
             self.create_features()
             prefix = self.prefix + '_' if self.prefix else ''
             suffix = '_' + self.suffix if self.suffix else ''
-            self.train.columns = prefix + '_' + self.train.columns + '_' + suffix
-            self.test.columns = prefix + '_' + self.test.columns + '_' + suffix
+            self.train.columns = prefix + self.train.columns + suffix
+            self.test.columns = prefix + self.test.columns + suffix
         return self
     
     @abstractmethod
