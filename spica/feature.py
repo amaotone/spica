@@ -47,8 +47,10 @@ class Feature(metaclass=ABCMeta):
     def run(self):
         with timer(self.name):
             self.create_features()
-            self.train.columns = self.prefix + '_' + self.train.columns + '_' + self.suffix
-            self.test.columns = self.prefix + '_' + self.test.columns + '_' + self.suffix
+            prefix = self.prefix + '_' if self.prefix else ''
+            suffix = '_' + self.suffix if self.suffix else ''
+            self.train.columns = prefix + '_' + self.train.columns + '_' + suffix
+            self.test.columns = prefix + '_' + self.test.columns + '_' + suffix
         return self
     
     @abstractmethod
