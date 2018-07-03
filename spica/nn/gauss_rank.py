@@ -1,3 +1,5 @@
+from itertools import accumulate
+
 import numpy as np
 import pandas  as pd
 from scipy.special import erfinv
@@ -14,12 +16,11 @@ def gauss_rank(dfs, cols=None, null_value=np.nan, fill_value=0, eps=0.01):
         df.loc[null, f] = fill_value
         df.loc[~null, f] = erfinv((rankdata(d) - 1) / len(d) * 2 * (1 - eps) - (1 - eps))
     
-    if len(dfs)==1:
-        return df
-    
     res = []
-    prev = 0
-    for d in dfs:
-        res.append(df[d.columns][prev:len(d)].copy())
-        prev += len(d)
-    return res
+    lens = list(accumulate([0] + [len(df) for df in dfs]))
+    for start, end in zip(lens, lens[1:]):
+        res.append(df[cols][start:end].copy())
+    if len(res) == 1:
+        return res[0]
+    else:
+        return res
