@@ -25,3 +25,11 @@ class NeighborDistance(BaseEstimator, TransformerMixin):
     def fit_transform(self, X, y=None, **fit_params):
         self.fit(X, y)
         return self.transform(X)
+    
+    def get_params(self, deep=True):
+        return {'n_neighbors': self.n_neighbors, 'kwargs': self.kwargs}
+    
+    def set_params(self, **params):
+        for param, value in params.items():
+            setattr(self, param, value)
+        return self
