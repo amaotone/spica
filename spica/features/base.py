@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from .utils import timer
+from spica.utils import timer
 
 
 def get_arguments(description):
