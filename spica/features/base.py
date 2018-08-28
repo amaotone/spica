@@ -16,7 +16,7 @@ def get_arguments(description):
 
 
 def get_features(namespace):
-    for k, v in namespace.items():
+    for k, v in ({k: v for k, v in namespace.items()}).items():
         if inspect.isclass(v) and issubclass(v, Feature) and not inspect.isabstract(v):
             yield v()
 
