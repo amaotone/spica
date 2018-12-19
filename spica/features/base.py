@@ -33,7 +33,7 @@ class Feature(metaclass=ABCMeta):
     prefix = ''
     suffix = ''
     dir = '.'
-    
+
     def __init__(self):
         if self.__class__.__name__.isupper():
             self.name = self.__class__.__name__.lower()
@@ -43,7 +43,7 @@ class Feature(metaclass=ABCMeta):
         self.test = pd.DataFrame()
         self.train_path = Path(self.dir) / f'{self.name}_train.ftr'
         self.test_path = Path(self.dir) / f'{self.name}_test.ftr'
-    
+
     def run(self):
         with timer(self.name):
             self.create_features()
@@ -52,15 +52,15 @@ class Feature(metaclass=ABCMeta):
             self.train.columns = prefix + self.train.columns + suffix
             self.test.columns = prefix + self.test.columns + suffix
         return self
-    
+
     @abstractmethod
     def create_features(self):
         raise NotImplementedError
-    
+
     def save(self):
         self.train.to_feather(str(self.train_path))
         self.test.to_feather(str(self.test_path))
-    
+
     def load(self):
         self.train = pd.read_feather(str(self.train_path))
         self.test = pd.read_feather(str(self.test_path))

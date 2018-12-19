@@ -1,9 +1,9 @@
 from IPython import get_ipython
 
-ipython = get_ipython()
+__ipy = get_ipython()
 
-if ipython:
-    if ipython.has_trait('kernel'):
-        ipython.magic('matplotlib inline')
-        ipython.magic('reload_ext autoreload')
-        ipython.magic('autoreload 2')
+if __ipy:
+    if __ipy.has_trait('kernel'):
+        __ipy.magic('matplotlib inline')
+        __ipy.magic('reload_ext autoreload')
+        __ipy.magic('autoreload 2')

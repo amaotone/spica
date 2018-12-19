@@ -18,10 +18,10 @@ class SwapNoiseGenerator(Sequence):
         self.indices = np.arange(len(x))
         if self.shuffle:
             self.indices = np.random.permutation(self.indices)
-    
+
     def __len__(self):
         return math.ceil(self.n_samples / self.batch_size)
-    
+
     def __getitem__(self, idx):
         indices = self.indices[idx * self.batch_size:(idx + 1) * self.batch_size]
         x_batch = self.x[indices, :]
@@ -31,14 +31,3 @@ class SwapNoiseGenerator(Sequence):
             swap_indices = np.random.choice(self.n_features, int(self.n_features * self.swap_ratio), replace=False)
             new_batch[i, swap_indices] = x_batch[np.random.randint(len(x_batch)), swap_indices]
         return new_batch, y_batch
-
-
-def get_DAE(X):
-    x_in = Input((X.shape[1],))
-    h = Dense(500, activation='relu')(x_in)
-    h = Dense(500, activation='relu', name='feature')(h)
-    h = Dense(500, activation='relu')(h)
-    x_out = Dense(X.shape[1], activation='linear')(h)
-    model = Model(inputs=x_in, outputs=x_out)
-    model.compile(optimizer='adam', loss='mse')
-    return model
