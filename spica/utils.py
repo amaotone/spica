@@ -1,4 +1,5 @@
 import json
+import logging
 import time
 from contextlib import contextmanager
 
@@ -17,11 +18,12 @@ def send_line_notification(message, config_path):
 
 
 @contextmanager
-def timer(name):
+def timer(name, logger=None, level=logging.DEBUG):
+    print_ = print if logger is None else lambda msg: logger.log(level, msg)
     t0 = time.time()
-    print(f'[{name}] start')
+    print_(f'[{name}] start')
     yield
-    print(f'[{name}] done in {time.time() - t0:.0f} s')
+    print_(f'[{name}] done in {time.time() - t0:.0f} s')
 
 
 def timestamp():
